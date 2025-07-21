@@ -1,0 +1,3 @@
+[submodule "modules/my_libft"]
+	path = modules/my_libft
+	url = git@github.com:KijijiKid/my_libft.git
