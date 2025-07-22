@@ -25,7 +25,7 @@ MAIN_FILE := main.c
 
 SRC_TEST_MAIN := main_tests.c
 
-TEST_FILES := test.c
+TEST_FILES := test.c heredoc.c
 TEST := $(addprefix , $(TEST_FILES))
 
 #Combines all
@@ -34,6 +34,17 @@ MELTING_POT := $(TEST)
 SRCS := $(MAIN_FILE) $(addprefix src/, $(MELTING_POT))
 
 OBJS := $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
+
+################################################################################
+########                   Git Modules                          ################
+################################################################################
+
+MODULES_DIR := modules
+
+LIBFT_DIR := $(addprefix $(MODULES_DIR)/, my_libft/)
+LIBFT_A := $(addprefix $(LIBFT_DIR)/, libft.a)
+
+
 
 ################################################################################
 ########                         COMPILING                      ################
@@ -55,10 +66,14 @@ NC := \033[0m # Reset
 
 NAME_TEST=tests.out
 
-all: $(NAME)
+all: $(NAME) $(LIBFT_A)
 
-$(NAME): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o $(NAME)
+$(LIBFT_A):
+	@echo "Compiling libft..."
+	@$(MAKE) -C $(LIBFT_DIR)
+
+$(NAME): $(OBJS) $(LIBFT_A)
+	$(CC) $(LDFLAGS) $(OBJS) $(LIBFT_A) -o $(NAME)
 	@echo "$(GREEN)$(BOLD)Successful Compilation$(NC)"
 
 # Rule to compile .o files
@@ -74,7 +89,7 @@ clean:
 	$(RM) $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME) $(NAME_TEST)
+	$(RM) $(NAME) $(NAME_TEST) $(LIBFT_A)
 	@echo "$(MAGENTA)$(BOLD)Executable + Object Files cleaned$(NC)"
 
 re: fclean all
