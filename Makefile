@@ -25,7 +25,7 @@ MAIN_FILE := main.c
 
 SRC_TEST_MAIN := main_tests.c
 
-TEST_FILES := test.c heredoc.c
+TEST_FILES := heredoc.c helper_functions_1.c helper_functions_2.c
 TEST := $(addprefix , $(TEST_FILES))
 
 #Combines all
@@ -41,7 +41,7 @@ OBJS := $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
 
 MODULES_DIR := modules
 
-LIBFT_DIR := $(addprefix $(MODULES_DIR)/, my_libft/)
+LIBFT_DIR := $(addprefix $(MODULES_DIR)/, my_libft)
 LIBFT_A := $(addprefix $(LIBFT_DIR)/, libft.a)
 
 
