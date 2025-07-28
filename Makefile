@@ -42,6 +42,7 @@ OBJS := $(addprefix $(OBJ_DIR)/, $(SRCS:%.c=%.o))
 MODULES_DIR := modules
 
 LIBFT_DIR := $(addprefix $(MODULES_DIR)/, my_libft)
+LIBFT_OBJS := $(addprefix $(LIBFT_DIR)/, build)
 LIBFT_A := $(addprefix $(LIBFT_DIR)/, libft.a)
 
 
@@ -86,7 +87,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 clean:
-	$(RM) $(OBJ_DIR)
+	$(RM) $(OBJ_DIR) $(LIBFT_OBJS)
 
 fclean: clean
 	$(RM) $(NAME) $(NAME_TEST) $(LIBFT_A)
