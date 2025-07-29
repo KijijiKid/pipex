@@ -10,8 +10,12 @@
 //MVP -> functions
 char	*access_path(char *cmd,char *paths);
 char	*extract_path(char **envp);
-int	open_file(char *file_name, int flag);
-void	run_cmd(char *cmd, char **envp, int infile_fd, int outfile_fd);
+int		open_file(char *file_name, int flag);
+
+/// No heredoc execution functions
+void	run_pipex(char **argv, int argc, char **envp, int infile_fd, int outfile_fd);
+void	run_first_or_last_cmd(char *cmd, char **envp, int in_fd, int out_fd);
+void	run_piped_cmd(char *cmd, char **envp, int pipe_read_end, int pipe_write_end);
 
 //Special Functions
 void	init_heredoc(char *lim);

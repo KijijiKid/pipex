@@ -6,7 +6,7 @@
 /*   By: mateoandre <mateoandre@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:32:43 by mateoandre        #+#    #+#             */
-/*   Updated: 2025/07/28 16:30:21 by mateoandre       ###   ########.fr       */
+/*   Updated: 2025/07/29 15:27:44 by mateoandre       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,19 @@ int main(int argc, char **argv, char **envp)
 {
 	int	infile_fd;
 	int	outfile_fd;
-	int	pipe_fd[2];
 
-	if (pipe(pipe_fd) == -1)
-		perror("Attempt to create a pipe failed.");
-	infile_fd = open_file(argv[1], O_RDONLY);
+
 	outfile_fd = open_file(argv[argc - 1], O_WRONLY);
-	run_cmd(argv[2], envp, infile_fd, pipe_fd[1]);
-	close(pipe_fd[1]);
-	run_cmd(argv[3], envp, pipe_fd[0], outfile_fd);
-	close(pipe_fd[0]);
+	if (ft_strncmp("here_doc", argv[1], ft_strlen("here_doc")) == 0)
+	{
+		// Max args here is 4 (excluding prgrm), ARG [1] & [2] are for heredoc
+		init_heredoc(argv[2]);
+	}
+	else
+	{
+		// Logic for 4<= pipes 
+		infile_fd = open_file(argv[1], O_RDONLY);
+		run_pipex(argv, argc , envp, infile_fd, outfile_fd);
+	}
 	return 0;
 }

@@ -6,11 +6,54 @@
 /*   By: mateoandre <mateoandre@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 06:34:42 by mateoandre        #+#    #+#             */
-/*   Updated: 2025/07/28 16:05:49 by mateoandre       ###   ########.fr       */
+/*   Updated: 2025/07/29 15:40:10 by mateoandre       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	swap_ptrs(int **a, int **b)
+{
+	int		*tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+/// @brief This fuction firstly takes a command
+/// then iterates through an two-dimensional array piping a given 
+/// amount of commands through the next cmd to execve
+/// as string, then 
+/// @param cmd 
+void	run_pipex(char **argv, int argc, char **envp, int infile_fd, int outfile_fd)
+{
+	int	i;
+	int	pipe_fd[2][2];
+	int	*curr_pipe;
+	int	*next_pipe;
+
+	i = 2;
+	curr_pipe = pipe_fd[0];
+	next_pipe = pipe_fd[1];
+	if (pipe(curr_pipe) < 0)
+		perror("Pipe creation failed");
+	run_first_or_last_cmd(argv[i], envp, infile_fd, curr_pipe[1]);
+	close(curr_pipe[1]);
+	while (i < (argc - 1))
+	{
+			if (pipe(next_pipe) < 0)
+				perror("Pipe creation failed");
+			run_piped_cmd(argv[i], envp, curr_pipe[0], next_pipe[1]);
+			close(curr_pipe[0]);
+			swap_ptrs(&curr_pipe, &next_pipe);
+	}
+	run_first_or_last_cmd(argv[i], envp, curr_pipe[0], outfile_fd);
+	close(curr_pipe[0]);
+	close(curr_pipe[1]);
+	close(next_pipe[0]);
+	close(next_pipe[1]);
+}
 
 /// @brief This function returns the file descriptor 
 /// given as parameter
@@ -26,35 +69,4 @@ int	open_file(char *file_name, int flag)
 		perror("File does not exist, please check path or permissions of the file.");
 	}
 	return (fd);
-}
-
-/// @brief This fuction gets a command name
-/// as string, then 
-/// @param cmd 
-void	run_cmd(char *cmd, char **envp, int infile_fd, int outfile_fd)
-{
-	int			proc_id;
-	char		*path;
-	char 		*cmd_path;
-	char		**cmd_args;
-
-
-	cmd_args = ft_split(cmd, ' ');
- 	path = extract_path(envp);
- 	cmd_path = access_path(cmd_args[0], path);
-	proc_id = fork();
-	if (proc_id == 0)
-	{
-		dup2(infile_fd, STDIN_FILENO);
-		close(infile_fd);
-		dup2(outfile_fd, STDOUT_FILENO);
-		close(outfile_fd);
-		execve(cmd_path, cmd_args, envp);
-	}
-	else
-	{
-		wait(NULL);
-		free2d(cmd_args);
-	}
-	return ;
 }
