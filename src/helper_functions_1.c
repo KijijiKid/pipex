@@ -6,7 +6,7 @@
 /*   By: mateoandre <mateoandre@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 06:34:42 by mateoandre        #+#    #+#             */
-/*   Updated: 2025/07/29 15:40:10 by mateoandre       ###   ########.fr       */
+/*   Updated: 2025/07/29 15:47:50 by mateoandre       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,22 @@ void	run_pipex(char **argv, int argc, char **envp, int infile_fd, int outfile_fd
 	int	*curr_pipe;
 	int	*next_pipe;
 
-	i = 2;
 	curr_pipe = pipe_fd[0];
 	next_pipe = pipe_fd[1];
 	if (pipe(curr_pipe) < 0)
 		perror("Pipe creation failed");
+	i = 2;
 	run_first_or_last_cmd(argv[i], envp, infile_fd, curr_pipe[1]);
 	close(curr_pipe[1]);
-	while (i < (argc - 1))
+	i++;
+	while (i < (argc - 2))
 	{
 			if (pipe(next_pipe) < 0)
 				perror("Pipe creation failed");
 			run_piped_cmd(argv[i], envp, curr_pipe[0], next_pipe[1]);
 			close(curr_pipe[0]);
 			swap_ptrs(&curr_pipe, &next_pipe);
+		i++;
 	}
 	run_first_or_last_cmd(argv[i], envp, curr_pipe[0], outfile_fd);
 	close(curr_pipe[0]);
