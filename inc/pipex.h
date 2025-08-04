@@ -6,7 +6,7 @@
 /*   By: mandre <mandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:59:08 by mandre            #+#    #+#             */
-/*   Updated: 2025/08/04 17:28:42 by mandre           ###   ########.fr       */
+/*   Updated: 2025/08/04 17:47:45 by mandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@ void	run_piped_cmd(char *cmd, char **envp, int pipe_read_end, int pipe_write_end
 
 //Special Functions
 void	init_heredoc(char *lim);
+
+//Norminette shorteners
+void	close_pip(int *curr_pipe, int *next_pipe);
 
 #endif
