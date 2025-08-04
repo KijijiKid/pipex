@@ -51,8 +51,8 @@ LIBFT_A := $(addprefix $(LIBFT_DIR)/, libft.a)
 ########                         COMPILING                      ################
 ################################################################################
 
-# CFLAGS := -Wall -Wextra -Werror -g -MMD -MP -I$(INC_DIRS)
-CFLAGS :=	-Wall -Werror -Wextra -g -MMD -MP $(addprefix -I, $(INC_DIRS))
+CFLAGS := -Wall -Wextra -g -MMD -MP -I$(INC_DIRS)
+# CFLAGS :=	-Wall -Werror -Wextra -g -MMD -MP $(addprefix -I, $(INC_DIRS))
 CFLAGS_SAN := $(CFLAGS)
 #LDFLAGS := -lncurses -fsanitize=address
 # LDFLAGS := -lncurses
