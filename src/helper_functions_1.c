@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_functions_1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mateoandre <mateoandre@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mandre <mandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 06:34:42 by mateoandre        #+#    #+#             */
-/*   Updated: 2025/07/29 15:47:50 by mateoandre       ###   ########.fr       */
+/*   Updated: 2025/08/04 17:28:21 by mandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ void	swap_ptrs(int **a, int **b)
 /// amount of commands through the next cmd to execve
 /// as string, then 
 /// @param cmd 
-void	run_pipex(char **argv, int argc, char **envp, int infile_fd, int outfile_fd)
+/// @param fd_in_out Its an 2D array always containing infile on index 0 and
+/// the outfile on index 1 -> Norminette reasons
+void	run_pipex(char **argv, int argc, char **envp, int fd_in_out[])
 {
 	int	i;
 	int	pipe_fd[2][2];
@@ -38,19 +40,19 @@ void	run_pipex(char **argv, int argc, char **envp, int infile_fd, int outfile_fd
 	if (pipe(curr_pipe) < 0)
 		perror("Pipe creation failed");
 	i = 2;
-	run_first_or_last_cmd(argv[i], envp, infile_fd, curr_pipe[1]);
+	run_first_or_last_cmd(argv[i], envp, fd_in_out[0], curr_pipe[1]);
 	close(curr_pipe[1]);
 	i++;
 	while (i < (argc - 2))
 	{
-			if (pipe(next_pipe) < 0)
-				perror("Pipe creation failed");
-			run_piped_cmd(argv[i], envp, curr_pipe[0], next_pipe[1]);
-			close(curr_pipe[0]);
-			swap_ptrs(&curr_pipe, &next_pipe);
+		if (pipe(next_pipe) < 0)
+			perror("Pipe creation failed");
+		run_piped_cmd(argv[i], envp, curr_pipe[0], next_pipe[1]);
+		close(curr_pipe[0]);
+		swap_ptrs(&curr_pipe, &next_pipe);
 		i++;
 	}
-	run_first_or_last_cmd(argv[i], envp, curr_pipe[0], outfile_fd);
+	run_first_or_last_cmd(argv[i], envp, curr_pipe[0], fd_in_out[1]);
 	close(curr_pipe[0]);
 	close(curr_pipe[1]);
 	close(next_pipe[0]);
