@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   input_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mandre <mandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 10:32:43 by mateoandre        #+#    #+#             */
-/*   Updated: 2025/08/05 21:18:38 by mandre           ###   ########.fr       */
+/*   Created: 2025/08/05 21:03:49 by mandre            #+#    #+#             */
+/*   Updated: 2025/08/05 21:15:58 by mandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	main(int argc, char **argv, char **envp)
+void	inpt_parsing(int argc, char **argv)
 {
-	inpt_parsing(argc, argv);
+	if (argc <= 4)
+		set_error(1);
+	throw_error();
 }

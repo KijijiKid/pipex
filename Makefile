@@ -25,7 +25,7 @@ MAIN_FILE := main.c
 
 SRC_TEST_MAIN := main_tests.c
 
-TEST_FILES := heredoc.c helper_functions_1.c helper_functions_2.c
+TEST_FILES := heredoc.c helper_functions_1.c helper_functions_2.c input_parsing.c error.c
 TEST := $(addprefix , $(TEST_FILES))
 
 #Combines all

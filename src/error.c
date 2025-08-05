@@ -1,18 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mandre <mandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/22 10:32:43 by mateoandre        #+#    #+#             */
-/*   Updated: 2025/08/05 21:18:38 by mandre           ###   ########.fr       */
+/*   Created: 2025/08/05 21:03:09 by mandre            #+#    #+#             */
+/*   Updated: 2025/08/05 21:17:33 by mandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	main(int argc, char **argv, char **envp)
+int	*get_error(void)
 {
-	inpt_parsing(argc, argv);
+	static int	status = 0;
+
+	return (&status);
+}
+
+void	set_error(int new_status)
+{
+	int	*status;
+
+	status = get_error();
+	*status = new_status;
+}
+
+void	throw_error(void)
+{
+	int	*status;
+
+	status = get_error();
+	if (*status == 1)
+		perror("Syntax isn't correct.");
+	
+	if (*status != 0)
+		exit(*status);
 }
