@@ -6,7 +6,7 @@
 /*   By: mandre <mandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 23:34:57 by mandre            #+#    #+#             */
-/*   Updated: 2025/08/06 19:10:19 by mandre           ###   ########.fr       */
+/*   Updated: 2025/08/06 20:02:51 by mandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,22 @@ void	execve_failed(char	**paths_2d, char	**cmd_2d, char	*cmd_path)
 	throw_error();
 }
 
-void	swap_ptrs(int *ptr1, int *ptr2)
+void	swap_ptrs(int **ptr1, int **ptr2)
 {
 	int	*tmp;
 
-	tmp = ptr2;
-	ptr2 = ptr1;
-	ptr1 = tmp;
+	tmp = *ptr2;
+	*ptr2 = *ptr1;
+	*ptr1 = tmp;
 }
 
 char	**extract_path(char **envp)
 {
 	char	**path_2d;
 
-	while (envp)
+	while (*envp)
 	{
-		if (ft_strncmp("PATH=", *envp, ft_strlen("PATH=")))
+		if (ft_strncmp("PATH=", *envp, ft_strlen("PATH=")) == 0)
 		{
 			path_2d = ft_split((*envp + 5), ':');
 			return (path_2d);
@@ -56,10 +56,14 @@ char	*access_path(char *cmd, char **paths_2d)
 	{
 		full_path = ft_strjoin(*paths_2d, path_cmd);
 		if (access(full_path, X_OK) == 0)
+		{
+			free(path_cmd);
 			return (full_path);
+		}
 		free(full_path);
 		paths_2d++;
 	}
+	free(path_cmd);
 	return (NULL);
 }
 

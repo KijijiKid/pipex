@@ -9,7 +9,7 @@
 		"type": "lldb",
 		"request": "launch",
 		"program": "${workspaceFolder}/pipex",
-		"args": ["infile.txt", "wc", "ls", "outfile.txt"],
+		"args": ["here_doc", "LIM", "grep 42", "wc", "outfile.txt"],
 		"cwd": "${workspaceFolder}",
 		"stopOnEntry": true,
 		}
