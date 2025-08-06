@@ -6,7 +6,7 @@
 /*   By: mandre <mandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/21 10:00:46 by mateoandre        #+#    #+#             */
-/*   Updated: 2025/08/05 22:39:10 by mandre           ###   ########.fr       */
+/*   Updated: 2025/08/06 20:36:36 by mandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ int	init_here_doc(char *limiter)
 			write(1, "here_doc> ", ft_strlen("here_doc> "));
 			line = get_next_line(STDIN_FILENO);
 			if (ft_strncmp(line, limiter, ft_strlen(line) - 1) == 0)
+			{
+				free(line);
 				break ;
+			}
 			write(pipe_fds[1], line, ft_strlen(line));
 			free(line);
 		}

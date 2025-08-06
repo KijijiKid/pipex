@@ -6,7 +6,7 @@
 /*   By: mandre <mandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 23:12:30 by mandre            #+#    #+#             */
-/*   Updated: 2025/08/06 20:12:11 by mandre           ###   ########.fr       */
+/*   Updated: 2025/08/06 20:22:44 by mandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	run_cmd(char *cmd, char **envp, int in_fd, int out_fd)
 		dup2(in_fd, STDIN_FILENO);
 		close(in_fd);
 		dup2(out_fd, STDOUT_FILENO);
-		close (out_fd);
 		paths_2d = extract_path(envp);
 		cmd_2d = ft_split(cmd, ' ');
 		cmd_path = access_path(cmd_2d[0], paths_2d);
@@ -38,6 +37,7 @@ void	run_cmd(char *cmd, char **envp, int in_fd, int out_fd)
 	}
 	else
 		wait(NULL);
+	close(out_fd);
 	throw_error();
 }
 
@@ -79,8 +79,6 @@ void	run_commands(int argc, char **argv, char **envp, int *fd_arr)
 	{
 		create_pipe(old_pipe);
 		run_cmd(argv[i], envp, new_pipe[0], old_pipe[1]);
-		// close(new_pipe[0]);
-		// close(new_pipe[1]);
 		swap_ptrs(&new_pipe, &old_pipe);
 		i++;
 	}
