@@ -6,7 +6,7 @@
 /*   By: mandre <mandre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:32:43 by mateoandre        #+#    #+#             */
-/*   Updated: 2025/08/06 19:13:17 by mandre           ###   ########.fr       */
+/*   Updated: 2025/08/06 21:05:51 by mandre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	main(int argc, char **argv, char **envp)
 	int		fd_arr[2];
 
 	inpt_parsing(argc, argv);
-	fd_arr[1] = open("outfile.txt", O_WRONLY);
+	fd_arr[1] = open("outfile.txt", O_WRONLY | O_CREAT | O_TRUNC);
 	if (ft_strncmp(argv[1], "here_doc", ft_strlen("here_doc")) == 0)
 	{
 		fd_arr[0] = init_here_doc(argv[2]);
@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	else
 	{
-		fd_arr[0] = open("infile.txt", O_RDONLY);
+		fd_arr[0] = open("infile.txt", O_RDONLY | O_CREAT);
 		run_commands(argc, argv, envp, fd_arr);
 	}
 }
